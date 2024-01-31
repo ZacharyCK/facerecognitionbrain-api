@@ -1,11 +1,16 @@
 // import express
 const express = require('express')
+// import bcrypt-nodejs
+// const bcrypt = require('bcrypt-nodejs')
+// import cors
+const cors = require("cors")
 
 // create express app 
 const app = express()
 
 // parser for json
 app.use(express.json())
+app.use(cors())
 
 // database
 const database = {
@@ -38,7 +43,7 @@ app.get('/', (req, res) => {
 app.post('/signin', (req, res) => {
     if(req.body.email === database.users[0].email &&
         req.body.password === database.users[0].password) {
-            res.json('success')
+            res.json(database.users[0])
     } else {
         res.status(400).json('Error. Could not log in.')
     }
@@ -51,7 +56,6 @@ app.post('/register', (req, res) => {
         id: '125',
         name: name,
         email: email,
-        password: password,
         entries: 0,
         joined: new Date()
     })
@@ -100,3 +104,4 @@ app.listen(3000, () => {
 /profile/:userid = GET = user
 /image --> PUT --> user
 */
+
