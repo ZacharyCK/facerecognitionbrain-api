@@ -1,9 +1,14 @@
+// import bcrypt-nodejs
+const bcrypt = require('bcrypt-nodejs')
+// import cors
 // import express
 const express = require('express')
-// import bcrypt-nodejs
-// const bcrypt = require('bcrypt-nodejs')
-// import cors
 const cors = require("cors")
+const knex = require('knex')
+const register = require('./controllers/register')
+const signin = require('./controllers/signin')
+const profile = require('./controllers/profile')
+const image = require('./controllers/image')
 
 // create express app 
 const app = express()
@@ -11,6 +16,21 @@ const app = express()
 // parser for json
 app.use(express.json())
 app.use(cors())
+
+const db = knex({
+    client: 'pg',
+    connection: {
+      host : '127.0.0.1',
+      port : 5432,
+      user : 'postgres',
+      password : 'root',
+      database : 'smartbrain'
+    }
+})
+
+//db.select('*').from('users').then(response => {
+//    console.log(response)
+//})
 
 // database
 const database = {
@@ -36,61 +56,27 @@ const database = {
 
 // route for root
 app.get('/', (req, res) => {
-    res.json(database.users)
+    //res.json(database.users)
 })
 
 // signin
 app.post('/signin', (req, res) => {
-    if(req.body.email === database.users[0].email &&
-        req.body.password === database.users[0].password) {
-            res.json(database.users[0])
-    } else {
-        res.status(400).json('Error. Could not log in.')
-    }
+    signin.handleSignin(req, res, db, bcrypt)
 })
 
 // register
-app.post('/register', (req, res) => {
-    const { name, email, password } = req.body
-    database.users.push({
-        id: '125',
-        name: name,
-        email: email,
-        entries: 0,
-        joined: new Date()
-    })
-    res.json(database.users[database.users.length - 1])
+app.post('/register',(req, res) => {
+    register.handleRegister(req, res, db, bcrypt)
 })
 
 // profile
 app.get('/profile/:id', (req, res) => {
-    const {id} = req.params
-    let found = false
-    database.users.forEach(user => {
-        if(user.id === id) {
-            found = true
-            return res.json(user)
-        }
-    })
-    if(!found) {
-        res.status(400).json('User not found.')
-    }
+    profile.handleProfile(req, res, db)
 }) 
 
 // image
 app.put('/image', (req, res) => {
-    const {id} = req.body
-    let found = false
-    database.users.forEach(user => {
-        if(user.id === id) {
-            found = true
-            user.entries += 1
-            return res.json(user.entries)
-        }
-    })
-    if(!found) {
-        res.status(400).json('User not found.')
-    }
+    image.handleImage(req, res, db)
 })
 
 app.listen(3000, () => {
