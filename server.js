@@ -1,14 +1,14 @@
 // import bcrypt-nodejs
-const bcrypt = require('bcrypt-nodejs')
+import bcrypt from './node_modules/bcrypt-nodejs/bCrypt.js'
 // import cors
 // import express
-const express = require('express')
-const cors = require("cors")
-const knex = require('knex')
-const register = require('./controllers/register')
-const signin = require('./controllers/signin')
-const profile = require('./controllers/profile')
-const image = require('./controllers/image')
+import express from './node_modules/express/index.js'
+import cors from './node_modules/cors/lib/index.js'
+import knex from './node_modules/knex/knex.js'
+import handleRegister from './controllers/register.js'
+import handleSignin from './controllers/signin.js'
+import handleImage from './controllers/image.js'
+import handleProfile from './controllers/profile.js'
 
 // create express app 
 const app = express()
@@ -61,22 +61,22 @@ app.get('/', (req, res) => {
 
 // signin
 app.post('/signin', (req, res) => {
-    signin.handleSignin(req, res, db, bcrypt)
+    handleSignin(req, res, db, bcrypt)
 })
 
 // register
 app.post('/register',(req, res) => {
-    register.handleRegister(req, res, db, bcrypt)
+    handleRegister(req, res, db, bcrypt)
 })
 
 // profile
 app.get('/profile/:id', (req, res) => {
-    profile.handleProfile(req, res, db)
+   handleProfile(req, res, db)
 }) 
 
 // image
 app.put('/image', (req, res) => {
-    image.handleImage(req, res, db)
+    handleImage(req, res, db)
 })
 
 app.listen(3000, () => {

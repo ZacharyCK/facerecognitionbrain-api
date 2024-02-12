@@ -1,3 +1,5 @@
+import fetch from '../node_modules/node-fetch/src/index.js'
+
 async function processingImageAPI (image) {
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     // In this section, we set the user authentication, user and app ID, model details, and the URL
@@ -71,6 +73,4 @@ const handleImage = (req, res, db) => {
     }) 
 }
 
-module.exports = {
-    handleImage: handleImage
-};
+export default handleImage
