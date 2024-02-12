@@ -1,10 +1,10 @@
 // import bcrypt-nodejs
-import bcrypt from './node_modules/bcrypt-nodejs/bCrypt.js'
+import bcrypt from 'bcrypt-nodejs'
 // import cors
 // import express
-import express from './node_modules/express/index.js'
-import cors from './node_modules/cors/lib/index.js'
-import knex from './node_modules/knex/knex.js'
+import express from 'express'
+import cors from 'cors'
+import knex from 'knex/knex.js'
 import handleRegister from './controllers/register.js'
 import handleSignin from './controllers/signin.js'
 import handleImage from './controllers/image.js'
