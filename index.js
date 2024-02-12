@@ -24,6 +24,8 @@ app.use((req, res, next) => {
     next();
 });
 
+const port = process.env.PORT || 3000;
+
 const db = knex({
     client: 'pg',
     connection: {
@@ -88,7 +90,7 @@ app.put('/image', (req, res) => {
     handleImage(req, res, db)
 })
 
-app.listen(3000, () => {
+app.listen(port, () => {
     console.log('app is running on port 3000!')
 })
 
